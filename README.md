@@ -1,17 +1,32 @@
 # Automatic-Code-Correction-via-Agentic-System
 
-1)The implemented agent is designed using LangChain and is capable of automatically detecting and fixing a single-line bug in a given raw Python code. In addition to correcting the bug, the agent also performs validation to ensure the fix is functional. When predefined test cases are not available, the agent intelligently generates and runs a set of assumed test cases using the integrated interpreter tool. This interpreter, combined with the agent’s reasoning capabilities, allows for effective and automated evaluation of the program's correctness.
+1)The implemented solution is a Multi-Agentic System built using LangChain, enhanced with Google's Gemini API, and supported by custom tools. It is capable of automatically detecting, correcting, validating, and classifying single-line bugs in raw Python code.
 
-2)When a Python file from the QuixBugs dataset is provided, the agent performs the following steps:
-Reads the buggy program using a Python file reading utility.
-Identifies and fixes the single-line bug in the code.
-Writes the corrected version to the fixed_programs folder.
-Validates the fix by executing the tester.py script on the modified file.
+Unlike traditional single-agent models, this system leverages a division of responsibility through three specialized agents, resulting in modular, accurate, and explainable debugging.
 
-As output, the agent provides:
 
-*The final fixed version of the code.
+When a Python file from the QuixBugs dataset is provided, the multi-agent system performs the following steps:
 
-*The detected bug class (from a set of 14 predefined bug classes).
+1. Bug Fixing Agent
 
-*The original buggy line and its corrected version.
+Reads the buggy program using the custom read_python_file tool.
+Analyzes and detects a single-line bug using the Gemini API.
+Fixes the bug and writes the corrected version to the fixed_programs/ folder via the write_python_file tool.
+
+2. Validation Agent
+
+Checks for available test cases (tester.py).
+If found, executes tester.py <program> to validate the fix.
+If not found, intelligently generates and runs assumed test cases using the built-in Riza_code_interpreter for logical verification.
+
+3. Bug Classification Agent
+
+Compares the buggy and corrected lines.
+Classifies the fix into one of 14 predefined bug categories (e.g., Off-by-One, Incorrect Operator).
+Output
+As output, the system provides:
+
+The final fixed version of the code.
+The classified bug type from the predefined taxonomy.
+The original buggy line and the corrected line for traceability.
+Test result summary confirming the functional validity of the fix.
